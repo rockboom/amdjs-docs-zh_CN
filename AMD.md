@@ -41,3 +41,14 @@ AMD与科技公司[AMD](http://en.wikipedia.org/wiki/Advanced_Micro_Devices)以�
 
 如果AMD的实现支持[Loader插件](https://github.com/amdjs/amdjs-api/blob/master/LoaderPlugins.md)，那么用"!"从插件的源id中分离出插件的模块id。因为插件源id可能是非常自由的格式，插件的源id可以使用大多数的字符。
 
+### dependencies <a name="define-dependencies"></a>
+
+dependencies是第二个参数，是一个模块id数组，这些模块id会被定义的模块引用。dependencies必须在模块工厂函数执行之前解析，并把解析的值作为参数传输传递给工厂函数，参数位置对应于依赖项数组中的索引。
+
+依赖id可能是相对的id，并且会相对于被定义的模块进行解析。换句话说，相对id就是相对于模块id进行解析，而不是用于查找模块的id。
+
+规范定义了有独特的解析方式的三个特殊依赖名。如果”require“，”exports“，或”module“的值出现在依赖列表中，该参数应解析为CommonJS模块规范定义的相应自由变量。
+
+dependencies是可选的参数。如果省略，默认传入["require", "exports", "module"]。然而，如果工厂函数的元数（长度属性）小于3，那么加载器可以选择仅使用与函数的arity或length相对应的参数数量来调用工厂。
+
+### factory <a name="define-factory"></a>
