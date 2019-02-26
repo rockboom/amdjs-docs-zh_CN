@@ -52,3 +52,17 @@ dependencies是第二个参数，是一个模块id数组，这些模块id会被�
 dependencies是可选的参数。如果省略，默认传入["require", "exports", "module"]。然而，如果工厂函数的元数（长度属性）小于3，那么加载器可以选择仅使用与函数的arity或length相对应的参数数量来调用工厂。
 
 ### factory <a name="define-factory"></a>
+
+第三个参数factory是一个函数，用来实例化模块或者一个对象。如果factory是一个函数，那么他只会被执行一次。如果factory参数是一个对象，那么这个函数会被指定为模块的导出值。
+
+如果factory函数返回一个值（一个对象，一个函数，或者任何强制为true的值），那么返回的值被指定为模块的导出值。
+
+#### 简化的CommonJS包装 <a name="commonjs-wrap"></a>
+
+如果dependencies参数被忽略，模块loader可能会选择用require语句的形式去扫描factory函数（用require（“module-id”）的形式）。因此要想正常工作，第一个参数必须是字面量形式的require。
+
+有些情况下模块loader可能选择不去扫描dependencies，由于代码大小限制或缺少对函数的toString支持（众所周知，Opera Mobile缺乏对函数toString的支持）。
+
+如果传入了dependencies参数，模块loader不应该扫描factory函数内的dependencies。
+
+## define.amd 属性 <a name="defineAmd"></a>
